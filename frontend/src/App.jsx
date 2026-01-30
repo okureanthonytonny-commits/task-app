@@ -11,6 +11,7 @@ function App() {
   const [message, setMessage] = useState("Connecting...");
   const [taskTitle, setTaskTitle] = useState("");
   const [token, setToken] = useState(localStorage.getItem("token"));
+  const [priority, setPriority] = useState("Medium");
 
   // 1. Define Functions
   const fetchTasks = async () => {
@@ -51,9 +52,10 @@ function App() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
         },
-        body: JSON.stringify({ title: taskTitle, completed: false }),
+        body: JSON.stringify({ title: taskTitle, completed: false , priority: priority }),
       });
       setTaskTitle("");
+      setPriority("Medium");
       fetchTasks();
     } catch (error) { console.error(error); }
   };
@@ -85,7 +87,20 @@ function App() {
           </div>
           
           <InputGroup className="mb-3">
-            <Form.Control placeholder="New task..." value={taskTitle} onChange={(e) => setTaskTitle(e.target.value)} />
+            <Form.Control 
+              placeholder="New task..." 
+              value={taskTitle} 
+              onChange={(e) => setTaskTitle(e.target.value)} 
+            />
+            <Form.Select 
+              style={{ maxWidth: '120px' }} 
+              value={priority} 
+              onChange={(e) => setPriority(e.target.value)}
+            >
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+            </Form.Select>
             <Button variant="primary" onClick={handleAddTask}>Add</Button>
           </InputGroup>
 
@@ -96,6 +111,12 @@ function App() {
                   onClick={() => handleToggle(t.id)} 
                   style={{ cursor: 'pointer', textDecoration: t.completed ? 'line-through' : 'none' }}
                 >
+                  <Badge 
+                    bg={t.priority === 'High' ? 'danger' : t.priority === 'Low' ? 'info' : 'warning'} 
+                    className="me-2"
+                  >
+                    {t.priority}
+                  </Badge>
                   {t.title}
                 </span>
                 <Button variant="outline-danger" size="sm" onClick={() => handleDelete(t.title)}>✕</Button>
