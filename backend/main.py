@@ -47,7 +47,7 @@ class DBTask(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     completed = Column(Boolean, default=False)
-    
+    priority = Column(String, default="Medium")
     # New: Link task to a user
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("DBUser", back_populates="tasks")
@@ -70,6 +70,7 @@ def get_db():
 class TaskSchema(BaseModel):
     title: str
     completed: bool
+    priority: str
 
 
 def get_current_user(authorization: str = Header(None), db: Session = Depends(get_db)):
