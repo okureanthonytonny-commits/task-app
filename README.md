@@ -15,5 +15,5 @@ A full-stack task management application with user authentication and priority l
 
 ## Live Links
 
-- **App**: 
-- **API**: 
+- **App**: No longer available
+- **API**: No longer available
